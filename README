@@ -1,0 +1,49 @@
+show-schedule
+=====================
+
+Shows Alabama athletic events schedule.
+
+Installation
+=====================
+
+Put the 'show-schedule' script in /usr/local/bin/.
+
+Put the 'sports' directory in /usr/local/share/.
+
+Make sure your users can read /usr/local/share/sports/.
+
+Usage
+=====================
+
+$> show-schedule [<sport>|--sports]
+
+Case 1:
+
+$> show-schedule
+
+The script will execute and it will show you what
+sports are available. It will keep asking you which sport's
+schedule you'd like to see until you manage to type one correctly.
+
+Case 2:
+
+$> show-schedule <sport-name>
+
+The script will attempt to look up the schedule for the sport <sport-name>,
+where <sport-name> is something like 'basketball'. If <sport-name> is not
+a recognized sport, it just fails.
+
+Case 3:
+
+$> show-schedule --sports
+
+The script will print all the sports for which it knows the schedule. That is,
+it just shows you which files you have in /usr/local/share/sports/.
+
+BUGS
+========================
+
+They're there, and they're plenty. :)
+
+Please report to:
+https://github.com/OEP/show-schedule

@@ -1,0 +1,64 @@
+#!/bin/bash
+# 
+# This script prevents one from having to visit rolltide.com,
+# a dastardly fate that no man or woman should have to face.
+#
+#
+# Dependencies:
+# 	perl: HTML::Strip (Ubuntu: libhtml-strip-perl)
+#	curl
+#	sed
+
+
+export SPORTSDIR="/usr/local/share/sports"
+export SPORT="$*"
+
+function usage() {
+	echo "$(basename $0) -- Shows schedules of Alabama sports in the console."
+	echo "Usage: $(basename $0) [<sport>|--sports]"
+}
+
+function printSports() {
+	ls "$SPORTSDIR" | xargs echo
+}
+
+
+if [ -n "$SPORT" ]; then
+	if [ "$SPORT" = "--sports" ]; then
+		printSports
+		exit 0
+	elif [ ! -f "$SPORTSDIR/$SPORT" ]; then
+		echo "Invalid sport '$SPORT'"
+		usage
+		exit 1
+	fi
+fi
+
+test -z "$SPORT" && \
+	echo -n "Your choices: " && \
+	printSports && \
+	read -p "Enter sport: " SPORT
+
+while [ -z "$SPORT" -o ! -f "$SPORTSDIR/$SPORT" ]; do
+	test -n "$SPORT" && echo "I don't have a schedule for '$SPORT'."
+	echo -n "Your choices: "
+	printSports
+	read -p "Enter sport: " SPORT
+done
+
+export URL=`cat "$SPORTSDIR/$SPORT"`
+
+curl -s "$URL" \
+	| grep event-listing -A 10 \
+	| perl -e 'use HTML::Strip;
+		my $hs = HTML::Strip->new();
+		while(my $line = <STDIN>) {
+			chomp $line;
+			print $hs->parse($line);
+		}
+		$hs->eof;' \
+	| sed -e '/^$/d' \
+	| tr '\n' ' ' \
+	| sed -e 's/[ \t]\{1,\}/ /g' \
+	| sed -e 's/\-\-/\n/g' \
+	&& echo
