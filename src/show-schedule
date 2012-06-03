@@ -9,8 +9,12 @@
 #	curl
 #	sed
 
+## Script expects that 'sports' directory is located at "../share/sports"
+## relative to its install path.
 
-export SPORTSDIR="/usr/local/share/sports"
+export SCRIPTDIR="$( cd "$( dirname "$0" )" && pwd )"
+export SPORTSDIR="$( cd "$SCRIPTDIR/../share/sports" && pwd)"
+
 export SPORT="$*"
 
 function usage() {

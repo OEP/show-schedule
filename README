@@ -6,11 +6,18 @@ Shows Alabama athletic events schedule.
 Installation
 =====================
 
-Put the 'show-schedule' script in /usr/local/bin/.
+Dependencies:
+  perl: HTML::Strip	(Ubuntu: libhtml-strip-perl)
+  curl			(Ubuntu: curl)
+  sed			(Ubuntu: sed)
 
-Put the 'sports' directory in /usr/local/share/.
+Install:
 
-Make sure your users can read /usr/local/share/sports/.
+$> sudo make install
+
+Uninstall:
+
+$> sudo make uninstall
 
 Usage
 =====================
